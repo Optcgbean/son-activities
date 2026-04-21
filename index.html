@@ -789,6 +789,12 @@
             return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
         }
 
+        function linkify(text) {
+            if (!text) return '';
+            const escaped = escapeHtml(text);
+            return escaped.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener" style="color:#2563eb;text-decoration:underline;">$1</a>');
+        }
+
         function showError(msg) {
             const el = document.getElementById('global-error');
             el.textContent = msg;
@@ -889,7 +895,7 @@
                             <span class="upcoming-type ${typeClass}">${e.type || '—'}</span>
                             <span class="upcoming-days ${daysClass}">${daysLabel(e.days)}</span>
                         </div>
-                        <div class="upcoming-info">${escapeHtml(e.info)}</div>
+                        <div class="upcoming-info">${linkify(e.info)}</div>
                         <div class="upcoming-meta">
                             <span>📅 ${formatDate(e.date)}</span>
                             <span>🕐 ${formatTime(e.time)}</span>
@@ -937,7 +943,7 @@
                                     <td class="date-cell">${dateHighlight}${formatDate(e.date)}</td>
                                     <td class="time-cell">${formatTime(e.time)}</td>
                                     <td><span class="type-badge ${typeClass}">${e.type || '—'}</span></td>
-                                    <td class="info-cell">${escapeHtml(e.info)}</td>
+                                    <td class="info-cell">${linkify(e.info)}</td>
                                     <td class="actions-cell">
                                         <button class="action-btn" title="Edit" onclick="openEditModal('${e.id}')">✏️</button>
                                         <button class="action-btn" title="Delete" onclick="deleteEntry('${e.id}')">🗑️</button>
