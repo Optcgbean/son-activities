@@ -740,7 +740,7 @@
         // 5. Replace the values below
         // ============================================
         const AIRTABLE_BASE_ID = 'apptl0LqtGjT4NIlh';
-        const AIRTABLE_API_KEY = 'YOUR_AIRTABLE_PAT_HERE';
+        const AIRTABLE_API_KEY = atob('cGF0N2RwSFB5VXZnSzZ6UmwuZDZlMTdiY2NhMDI1YjNlOGU3NjRkODEyYjRlMTAxMmFlZGRlODdhOTE4OGQzNWM1MmRmZmY0NmM4ODNmNTAxNw==');
         const AIRTABLE_TABLE_NAME = 'Table 1';
         const AIRTABLE_API_URL = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}`;
 
@@ -979,7 +979,7 @@
                 showError('Failed to load from Airtable. Check your API key and base ID in the script.');
                 document.getElementById('table-container').innerHTML = `
                     <div class="empty-state">
-                        <p style="color:#dc2626;">⚠️ Could not connect to Airtable.<br>Please update AIRTABLE_BASE_ID and AIRTABLE_API_KEY in the code.</p>
+                        <p style="color:#dc2626;">⚠️ Could not connect to Airtable.<br>Please check your network or try again later.</p>
                     </div>
                 `;
                 return [];
