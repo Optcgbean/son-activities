@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Son Activities Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            color: #1a1a2e;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 1.5rem 0 2rem;
+            border-bottom: 1px solid #e8e8f0;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .status-bar .connected {
+            color: #059669;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-bar .connected::before {
+            content: "●";
+            font-size: 0.6rem;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #3b82f6;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Upcoming Section */
+        .upcoming-section {
+            background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+            border: 1px solid #bfdbfe;
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .upcoming-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e40af;
+        }
+
+        .upcoming-count {
+            background: #3b82f6;
+            color: #fff;
+            padding: 0.15rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+
+        .upcoming-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .upcoming-card {
+            background: #fff;
+            border: 1px solid #e0e7ff;
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            transition: box-shadow 0.2s;
+        }
+
+        .upcoming-card:hover {
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+        }
+
+        .upcoming-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .upcoming-type {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+        }
+
+        .upcoming-type.school {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .upcoming-type.personal {
+            background: #fce7f3;
+            color: #be185d;
+        }
+
+        .upcoming-days {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #dc2626;
+        }
+
+        .upcoming-days.soon {
+            color: #dc2626;
+        }
+
+        .upcoming-days.week {
+            color: #ea580c;
+        }
+
+        .upcoming-info {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #1a1a2e;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .upcoming-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .upcoming-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .empty-upcoming {
+            text-align: center;
+            padding: 2rem;
+            color: #888;
+            font-size: 0.95rem;
+        }
+
+        /* Form Section */
+        .form-section {
+            background: #fafafa;
+            border: 1px solid #e8e8f0;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-section h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            color: #1a1a2e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #444;
+        }
+
+        .form-group label .required {
+            color: #dc2626;
+            margin-left: 2px;
+        }
+
+        select, input[type="text"], input[type="date"], input[type="time"], textarea {
+            background: #fff;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            color: #1a1a2e;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .submit-section {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #444;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        /* Success / Error Messages */
+        .global-error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 0.875rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+            font-size: 0.9rem;
+        }
+
+        .global-error.show {
+            display: block;
+        }
+
+        .success-message {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #16a34a;
+            padding: 0.875rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+            font-size: 0.9rem;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        /* Data Section */
+        .data-section {
+            margin-bottom: 2rem;
+        }
+
+        .data-section h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: #1a1a2e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .data-count {
+            font-size: 0.85rem;
+            color: #888;
+            font-weight: 400;
+        }
+
+        /* Controls */
+        .controls-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e8e8f0;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-group label {
+            font-size: 0.85rem;
+            color: #666;
+            white-space: nowrap;
+        }
+
+        .filter-group select {
+            background: #fff;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 0.45rem 0.75rem;
+            color: #1a1a2e;
+            font-size: 0.9rem;
+            cursor: pointer;
+            min-width: 120px;
+        }
+
+        .sort-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .sort-btn {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            color: #666;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .sort-btn:hover {
+            background: #e5e7eb;
+            color: #1a1a2e;
+        }
+
+        .sort-btn.active {
+            background: #eff6ff;
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .sort-btn.asc::after { content: " ↑"; }
+        .sort-btn.desc::after { content: " ↓"; }
+
+        .filter-btn {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            color: #666;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            background: #e5e7eb;
+            color: #1a1a2e;
+        }
+
+        /* Table */
+        .table-container {
+            background: #fff;
+            border: 1px solid #e8e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        thead {
+            background: #f8fafc;
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #444;
+            border-bottom: 1px solid #e8e8f0;
+            white-space: nowrap;
+            cursor: pointer;
+            user-select: none;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        th:hover {
+            color: #3b82f6;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #f0f0f5;
+            color: #333;
+            vertical-align: top;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .type-badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+        }
+
+        .type-badge.school {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .type-badge.personal {
+            background: #fce7f3;
+            color: #be185d;
+        }
+
+        .info-cell {
+            max-width: 300px;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .date-cell {
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .time-cell {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #888;
+        }
+
+        /* Edit / Delete Actions */
+        .actions-cell {
+            white-space: nowrap;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.4rem;
+            border-radius: 6px;
+            transition: background 0.2s;
+            font-size: 1rem;
+        }
+
+        .action-btn:hover {
+            background: #f0f0f5;
+        }
+
+        /* Edit Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: #fff;
+            border: 1px solid #e8e8f0;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .modal h2 {
+            margin-bottom: 1.5rem;
+            color: #1a1a2e;
+            font-size: 1.25rem;
+        }
+
+        .modal .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .modal select, .modal input, .modal textarea {
+            width: 100%;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            header h1 { font-size: 1.6rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .controls-bar { flex-direction: column; align-items: stretch; }
+            .upcoming-cards { grid-template-columns: 1fr; }
+            th, td { padding: 0.75rem 0.5rem; font-size: 0.85rem; }
+            .info-cell { max-width: 150px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📅 Son Activities Tracker</h1>
+            <p>Keep track of school and personal activities</p>
+            <div class="status-bar">
+                <span class="connected">Connected to Airtable</span>
+                <span id="entry-stats">Loading entries...</span>
+            </div>
+        </header>
+
+        <!-- Upcoming Section -->
+        <section class="upcoming-section" id="upcoming-section">
+            <div class="upcoming-header">
+                ⏰ Upcoming (Next 5 Days)
+                <span class="upcoming-count" id="upcoming-count">0</span>
+            </div>
+            <div id="upcoming-container">
+                <div class="empty-upcoming">Loading upcoming activities...</div>
+            </div>
+        </section>
+
+        <!-- Add Form -->
+        <section class="form-section">
+            <h2>➕ Add New Activity</h2>
+            
+            <div class="global-error" id="global-error"></div>
+            <div class="success-message" id="success-message"></div>
+
+            <form id="activity-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Date <span class="required">*</span></label>
+                        <input type="date" id="act-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Time <span class="required">*</span></label>
+                        <input type="time" id="act-time" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Type <span class="required">*</span></label>
+                        <select id="act-type" required>
+                            <option value="">Select Type...</option>
+                            <option value="School">School</option>
+                            <option value="Personal">Personal</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>Information / Details <span class="required">*</span></label>
+                        <textarea id="act-info" placeholder="Enter activity details..." required></textarea>
+                    </div>
+                </div>
+                <div class="submit-section">
+                    <button type="button" class="btn btn-secondary" id="clear-btn">Clear</button>
+                    <button type="submit" class="btn btn-primary" id="submit-btn">Add Activity</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Entries Table -->
+        <section class="data-section">
+            <h2>
+                📋 All Activities
+                <span class="data-count" id="entry-count">(0 entries)</span>
+            </h2>
+
+            <div class="controls-bar">
+                <div class="filter-group">
+                    <label>Filter by Type:</label>
+                    <select id="filter-type">
+                        <option value="">All</option>
+                        <option value="School">School</option>
+                        <option value="Personal">Personal</option>
+                    </select>
+                </div>
+                <div class="sort-group">
+                    <label style="font-size:0.85rem;color:#666;">Sort:</label>
+                    <button class="sort-btn active desc" data-sort="date" onclick="setSort('date')">Date</button>
+                    <button class="sort-btn" data-sort="type" onclick="setSort('type')">Type</button>
+                </div>
+                <button class="filter-btn" onclick="clearFilters()">Clear Filters</button>
+            </div>
+
+            <div class="table-container" id="table-container">
+                <div class="empty-state">
+                    <p>Loading activities from Airtable...</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal-overlay" id="edit-modal">
+        <div class="modal">
+            <h2>✏️ Edit Activity</h2>
+            <input type="hidden" id="edit-id">
+            
+            <div class="form-group">
+                <label>Date</label>
+                <input type="date" id="edit-date">
+            </div>
+            <div class="form-group">
+                <label>Time</label>
+                <input type="time" id="edit-time">
+            </div>
+            <div class="form-group">
+                <label>Type</label>
+                <select id="edit-type">
+                    <option value="School">School</option>
+                    <option value="Personal">Personal</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Information</label>
+                <textarea id="edit-info" rows="3"></textarea>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveEdit()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // AIRTABLE CONFIG — UPDATE THESE
+        // ============================================
+        // To set up:
+        // 1. Create an Airtable base (or use existing)
+        // 2. Create a table named "Activities"
+        // 3. Add these fields (exact names):
+        //    - Date (Date field)
+        //    - Time (Single line text)
+        //    - Type (Single select: School, Personal)
+        //    - Information (Long text)
+        // 4. Get your API key from https://airtable.com/create/tokens
+        // 5. Replace the values below
+        // ============================================
+        const AIRTABLE_BASE_ID = 'apptl0LqtGjT4NIlh';
+        const AIRTABLE_API_KEY = 'YOUR_AIRTABLE_PAT_HERE';
+        const AIRTABLE_TABLE_NAME = 'Table 1';
+        const AIRTABLE_API_URL = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}`;
+
+        let entries = [];
+        let filterState = { type: '' };
+        let sortState = { field: 'date', direction: 'desc' };
+
+        // Generate a Name for Airtable primary field
+        function generateName(entry) {
+            const dateStr = entry.date || '';
+            const typeStr = entry.type || '';
+            const infoStr = entry.info ? entry.info.substring(0, 30) : '';
+            return `${dateStr} ${typeStr}`.trim() || infoStr || 'Activity';
+        }
+
+        // ========== HELPERS ==========
+        function formatDate(dateStr) {
+            if (!dateStr) return '—';
+            const d = new Date(dateStr + 'T00:00:00');
+            return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function formatTime(timeStr) {
+            if (!timeStr) return '—';
+            return timeStr;
+        }
+
+        function daysFromNow(dateStr) {
+            if (!dateStr) return null;
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            const target = new Date(dateStr + 'T00:00:00');
+            const diffMs = target - today;
+            return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+        }
+
+        function daysLabel(days) {
+            if (days < 0) return `${Math.abs(days)}d ago`;
+            if (days === 0) return 'Today';
+            if (days === 1) return 'Tomorrow';
+            return `${days} days`;
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        }
+
+        function showError(msg) {
+            const el = document.getElementById('global-error');
+            el.textContent = msg;
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 5000);
+        }
+
+        function showSuccess(msg) {
+            const el = document.getElementById('success-message');
+            el.textContent = msg;
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 3000);
+        }
+
+        function updateStats() {
+            const filtered = filterEntries(entries);
+            const total = entries.length;
+            const filtCount = filtered.length;
+            const label = (filterState.type) ? `${filtCount} of ${total}` : `${total}`;
+            document.getElementById('entry-count').textContent = `(${label} entries)`;
+            document.getElementById('entry-stats').textContent = `${total} total entries`;
+        }
+
+        // ========== FILTERS & SORT ==========
+        function filterEntries(list) {
+            return list.filter(e => {
+                if (filterState.type && e.type !== filterState.type) return false;
+                return true;
+            });
+        }
+
+        function sortEntries(list) {
+            return [...list].sort((a, b) => {
+                let cmp = 0;
+                switch (sortState.field) {
+                    case 'date':
+                        const da = a.date ? new Date(a.date + 'T' + (a.time || '00:00')) : new Date(0);
+                        const db = b.date ? new Date(b.date + 'T' + (b.time || '00:00')) : new Date(0);
+                        cmp = da - db;
+                        break;
+                    case 'type':
+                        cmp = (a.type || '').localeCompare(b.type || '');
+                        break;
+                }
+                return sortState.direction === 'asc' ? cmp : -cmp;
+            });
+        }
+
+        window.setSort = function(field) {
+            if (sortState.field === field) {
+                sortState.direction = sortState.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortState.field = field;
+                sortState.direction = 'asc';
+            }
+            updateSortUI();
+            renderTable();
+        };
+
+        function updateSortUI() {
+            document.querySelectorAll('.sort-btn').forEach(btn => {
+                btn.classList.remove('active', 'asc', 'desc');
+                if (btn.dataset.sort === sortState.field) {
+                    btn.classList.add('active', sortState.direction);
+                }
+            });
+        }
+
+        window.clearFilters = function() {
+            filterState = { type: '' };
+            document.getElementById('filter-type').value = '';
+            renderTable();
+        };
+
+        // ========== UPCOMING SECTION ==========
+        function renderUpcoming() {
+            const container = document.getElementById('upcoming-container');
+            const countEl = document.getElementById('upcoming-count');
+            
+            const upcoming = entries
+                .map(e => ({ ...e, days: daysFromNow(e.date) }))
+                .filter(e => e.days !== null && e.days >= 0 && e.days <= 5)
+                .sort((a, b) => a.days - b.days);
+
+            countEl.textContent = upcoming.length;
+
+            if (upcoming.length === 0) {
+                container.innerHTML = '<div class="empty-upcoming">No activities in the next 5 days</div>';
+                return;
+            }
+
+            container.innerHTML = '<div class="upcoming-cards">' + upcoming.map(e => {
+                const daysClass = e.days <= 1 ? 'soon' : 'week';
+                const typeClass = e.type === 'School' ? 'school' : 'personal';
+                return `
+                    <div class="upcoming-card">
+                        <div class="upcoming-card-header">
+                            <span class="upcoming-type ${typeClass}">${e.type || '—'}</span>
+                            <span class="upcoming-days ${daysClass}">${daysLabel(e.days)}</span>
+                        </div>
+                        <div class="upcoming-info">${escapeHtml(e.info)}</div>
+                        <div class="upcoming-meta">
+                            <span>📅 ${formatDate(e.date)}</span>
+                            <span>🕐 ${formatTime(e.time)}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('') + '</div>';
+        }
+
+        // ========== TABLE ==========
+        function renderTable() {
+            const container = document.getElementById('table-container');
+            let filtered = filterEntries(entries);
+            filtered = sortEntries(filtered);
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <p>${entries.length === 0 ? 'No activities yet. Add one above!' : 'No activities match your filter.'}</p>
+                    </div>
+                `;
+                updateStats();
+                return;
+            }
+
+            const html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:120px">Date</th>
+                            <th style="width:80px">Time</th>
+                            <th style="width:100px">Type</th>
+                            <th>Information</th>
+                            <th style="width:100px">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${filtered.map(e => {
+                            const typeClass = e.type === 'School' ? 'school' : 'personal';
+                            const days = daysFromNow(e.date);
+                            const dateHighlight = (days !== null && days >= 0 && days <= 5)
+                                ? '<span style="color:#dc2626;font-weight:700;">●</span> ' : '';
+                            return `
+                                <tr>
+                                    <td class="date-cell">${dateHighlight}${formatDate(e.date)}</td>
+                                    <td class="time-cell">${formatTime(e.time)}</td>
+                                    <td><span class="type-badge ${typeClass}">${e.type || '—'}</span></td>
+                                    <td class="info-cell">${escapeHtml(e.info)}</td>
+                                    <td class="actions-cell">
+                                        <button class="action-btn" title="Edit" onclick="openEditModal('${e.id}')">✏️</button>
+                                        <button class="action-btn" title="Delete" onclick="deleteEntry('${e.id}')">🗑️</button>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+            container.innerHTML = html;
+            updateStats();
+        }
+
+        // ========== AIRTABLE API ==========
+        async function fetchEntries() {
+            try {
+                const url = AIRTABLE_API_URL + '?sort%5B0%5D%5Bfield%5D=Date&sort%5B0%5D%5Bdirection%5D=desc';
+                const res = await fetch(url, {
+                    headers: {
+                        'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                entries = data.records.map(r => ({
+                    id: r.id,
+                    date: r.fields.Date,
+                    time: r.fields.Time,
+                    type: r.fields.Type,
+                    info: r.fields.Information
+                }));
+                renderUpcoming();
+                renderTable();
+                return entries;
+            } catch (err) {
+                console.error('Fetch error:', err);
+                showError('Failed to load from Airtable. Check your API key and base ID in the script.');
+                document.getElementById('table-container').innerHTML = `
+                    <div class="empty-state">
+                        <p style="color:#dc2626;">⚠️ Could not connect to Airtable.<br>Please update AIRTABLE_BASE_ID and AIRTABLE_API_KEY in the code.</p>
+                    </div>
+                `;
+                return [];
+            }
+        }
+
+        async function createEntry(entry) {
+            const btn = document.getElementById('submit-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading-spinner"></span> Adding...';
+            try {
+                const res = await fetch(AIRTABLE_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        fields: {
+                            'Name': generateName(entry),
+                            'Date': entry.date,
+                            'Time': entry.time,
+                            'Type': entry.type,
+                            'Information': entry.info
+                        }
+                    })
+                });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                entries.push({
+                    id: data.id,
+                    date: data.fields.Date,
+                    time: data.fields.Time,
+                    type: data.fields.Type,
+                    info: data.fields.Information
+                });
+                renderUpcoming();
+                renderTable();
+                showSuccess('Activity added successfully!');
+                document.getElementById('activity-form').reset();
+            } catch (err) {
+                showError(`Failed to add: ${err.message}`);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Add Activity';
+            }
+        }
+
+        window.deleteEntry = async function(id) {
+            if (!confirm('Delete this activity?')) return;
+            try {
+                const res = await fetch(`${AIRTABLE_API_URL}/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                entries = entries.filter(e => e.id !== id);
+                renderUpcoming();
+                renderTable();
+                showSuccess('Deleted successfully');
+            } catch (err) {
+                showError(`Delete failed: ${err.message}`);
+            }
+        };
+
+        window.openEditModal = function(id) {
+            const e = entries.find(x => x.id === id);
+            if (!e) return;
+            document.getElementById('edit-id').value = id;
+            document.getElementById('edit-date').value = e.date || '';
+            document.getElementById('edit-time').value = e.time || '';
+            document.getElementById('edit-type').value = e.type || 'School';
+            document.getElementById('edit-info').value = e.info || '';
+            document.getElementById('edit-modal').classList.add('show');
+        };
+
+        window.closeEditModal = function() {
+            document.getElementById('edit-modal').classList.remove('show');
+        };
+
+        window.saveEdit = async function() {
+            const id = document.getElementById('edit-id').value;
+            const date = document.getElementById('edit-date').value;
+            const time = document.getElementById('edit-time').value;
+            const type = document.getElementById('edit-type').value;
+            const info = document.getElementById('edit-info').value.trim();
+            if (!date || !time || !info) {
+                showError('Please fill in all fields');
+                return;
+            }
+            const name = generateName({ date, time, type, info });
+            try {
+                const res = await fetch(`${AIRTABLE_API_URL}/${id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        fields: {
+                            'Name': name,
+                            'Date': date,
+                            'Time': time,
+                            'Type': type,
+                            'Information': info
+                        }
+                    })
+                });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                const idx = entries.findIndex(e => e.id === id);
+                if (idx !== -1) {
+                    entries[idx] = {
+                        id: data.id,
+                        date: data.fields.Date,
+                        time: data.fields.Time,
+                        type: data.fields.Type,
+                        info: data.fields.Information
+                    };
+                }
+                renderUpcoming();
+                renderTable();
+                closeEditModal();
+                showSuccess('Updated successfully');
+            } catch (err) {
+                showError(`Update failed: ${err.message}`);
+            }
+        };
+
+        // Close modal on outside click
+        document.getElementById('edit-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeEditModal();
+        });
+
+        // ========== FORM HANDLERS ==========
+        document.getElementById('activity-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const date = document.getElementById('act-date').value;
+            const time = document.getElementById('act-time').value;
+            const type = document.getElementById('act-type').value;
+            const info = document.getElementById('act-info').value.trim();
+            if (!date || !time || !type || !info) {
+                showError('Please fill in all fields');
+                return;
+            }
+            createEntry({ date, time, type, info });
+        });
+
+        document.getElementById('clear-btn').addEventListener('click', function() {
+            document.getElementById('activity-form').reset();
+        });
+
+        document.getElementById('filter-type').addEventListener('change', function() {
+            filterState.type = this.value;
+            renderTable();
+        });
+
+        // ========== INIT ==========
+        // Set default date to today
+        document.getElementById('act-date').valueAsDate = new Date();
+
+        // Load entries
+        fetchEntries();
+    </script>
+</body>
+</html>
