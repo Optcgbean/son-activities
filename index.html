@@ -797,6 +797,11 @@
             return escaped.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener" style="color:#2563eb;text-decoration:underline;">$1</a>');
         }
 
+        function pdfLink(url) {
+            if (!url) return '';
+            return `<br><a href="${escapeHtml(url)}" target="_blank" rel="noopener" style="color:#2563eb;text-decoration:underline;font-size:0.9em;">📄 View Summative Notice (PDF)</a>`;
+        }
+
         function showError(msg) {
             const el = document.getElementById('global-error');
             el.textContent = msg;
@@ -897,7 +902,7 @@
                             <span class="upcoming-type ${typeClass}">${e.type || '—'}</span>
                             <span class="upcoming-days ${daysClass}">${daysLabel(e.days)}</span>
                         </div>
-                        <div class="upcoming-info">${linkify(e.info)}</div>
+                        <div class="upcoming-info">${linkify(e.info)}${pdfLink(e.pdf)}</div>
                         <div class="upcoming-meta">
                             <span>📅 ${formatDate(e.date)}</span>
                             <span>🕐 ${formatTime(e.time)}</span>
@@ -945,7 +950,7 @@
                                     <td class="date-cell">${dateHighlight}${formatDate(e.date)}</td>
                                     <td class="time-cell">${formatTime(e.time)}</td>
                                     <td><span class="type-badge ${typeClass}">${e.type || '—'}</span></td>
-                                    <td class="info-cell">${linkify(e.info)}</td>
+                                    <td class="info-cell">${linkify(e.info)}${pdfLink(e.pdf)}</td>
                                     <td class="actions-cell">
                                         <button class="action-btn" title="Edit" onclick="openEditModal('${e.id}')">✏️</button>
                                         <button class="action-btn" title="Delete" onclick="deleteEntry('${e.id}')">🗑️</button>
@@ -981,16 +986,16 @@
                 }));
                 // Inject hardcoded summative assessment events if not already present
                 const hardcoded = [
-                    { date: '2026-05-11', time: '08:20', type: 'School', info: 'Chinese Listening Assessment (during lesson time)' },
-                    { date: '2026-05-26', time: '08:20', type: 'School', info: 'Pre-Assessment: Half-day timetable (08:20-12:20), Revision Period, Lessons 1-5, Dismissal 12:30' },
-                    { date: '2026-05-27', time: '08:20', type: 'School', info: 'Pre-Assessment: Half-day timetable (08:20-12:20), Revision Period, Lessons 1-5, Dismissal 12:30. English Listening Assessment today.' },
-                    { date: '2026-05-28', time: '08:20', type: 'School', info: 'G2 Term 2 Summative Assessment Day 1: Homeroom + Speaking Assessments 08:20-08:55 | Science (30 mins) 08:55-10:05 | Math (60 mins) 10:20-11:30 | Self-study + Speaking 11:45-12:20 | Dismissal 12:30' },
-                    { date: '2026-05-29', time: '08:20', type: 'School', info: 'G2 Term 2 Summative Assessment Day 2: Homeroom + Speaking Assessments 08:20-08:55 | English Reading & Language Usage (60 mins) 08:55-10:05 | General Studies (35 mins) 10:20-11:30 | Self-study + Speaking 11:45-12:20 | Dismissal 12:30' },
-                    { date: '2026-06-01', time: '08:20', type: 'School', info: 'G2 Term 2 Summative Assessment Day 3: Homeroom + Speaking Assessments 08:20-08:55 | Chinese Reading (60 mins) 08:55-10:05 | English Writing (60 mins) 10:20-11:30 | Self-study + Speaking 11:45-12:20 | Dismissal 12:30' },
-                    { date: '2026-06-02', time: '08:20', type: 'School', info: 'G2 Term 2 Summative Assessment Day 4: Homeroom + Speaking Assessments 08:20-08:55 | Chinese Writing (60 mins) 10:20-11:30 | Self-study + Speaking 11:45-12:20 | Dismissal 12:30 | Make-up assessments in afternoon for absent students' },
-                    { date: '2026-06-03', time: '08:20', type: 'School', info: 'Post-Assessment: Half-day timetable (08:20-12:20), Review of assessment papers, Lessons 1-6, Dismissal 12:30' },
-                    { date: '2026-06-04', time: '08:20', type: 'School', info: 'Post-Assessment: Half-day timetable (08:20-12:20), Review of assessment papers, Lessons 1-6, Dismissal 12:30' },
-                    { date: '2026-06-05', time: '08:20', type: 'School', info: 'Post-Assessment: Half-day timetable (08:20-12:20), Review of assessment papers, Lessons 1-6, Dismissal 12:30' }
+                    { date: '2026-05-11', time: '08:20', type: 'School', info: 'Chinese Listening Assessment (during lesson time)', pdf: 'Summative.pdf' },
+                    { date: '2026-05-26', time: '08:20', type: 'School', info: 'Pre-Assessment: Half-day timetable (08:20-12:20), Revision Period, Lessons 1-5, Dismissal 12:30', pdf: 'Summative.pdf' },
+                    { date: '2026-05-27', time: '08:20', type: 'School', info: 'Pre-Assessment: Half-day timetable (08:20-12:20), Revision Period, Lessons 1-5, Dismissal 12:30. English Listening Assessment today.', pdf: 'Summative.pdf' },
+                    { date: '2026-05-28', time: '08:20', type: 'School', info: 'G2 Term 2 Summative Assessment Day 1: Homeroom + Speaking Assessments 08:20-08:55 | Science (30 mins) 08:55-10:05 | Math (60 mins) 10:20-11:30 | Self-study + Speaking 11:45-12:20 | Dismissal 12:30', pdf: 'Summative.pdf' },
+                    { date: '2026-05-29', time: '08:20', type: 'School', info: 'G2 Term 2 Summative Assessment Day 2: Homeroom + Speaking Assessments 08:20-08:55 | English Reading & Language Usage (60 mins) 08:55-10:05 | General Studies (35 mins) 10:20-11:30 | Self-study + Speaking 11:45-12:20 | Dismissal 12:30', pdf: 'Summative.pdf' },
+                    { date: '2026-06-01', time: '08:20', type: 'School', info: 'G2 Term 2 Summative Assessment Day 3: Homeroom + Speaking Assessments 08:20-08:55 | Chinese Reading (60 mins) 08:55-10:05 | English Writing (60 mins) 10:20-11:30 | Self-study + Speaking 11:45-12:20 | Dismissal 12:30', pdf: 'Summative.pdf' },
+                    { date: '2026-06-02', time: '08:20', type: 'School', info: 'G2 Term 2 Summative Assessment Day 4: Homeroom + Speaking Assessments 08:20-08:55 | Chinese Writing (60 mins) 10:20-11:30 | Self-study + Speaking 11:45-12:20 | Dismissal 12:30 | Make-up assessments in afternoon for absent students', pdf: 'Summative.pdf' },
+                    { date: '2026-06-03', time: '08:20', type: 'School', info: 'Post-Assessment: Half-day timetable (08:20-12:20), Review of assessment papers, Lessons 1-6, Dismissal 12:30', pdf: 'Summative.pdf' },
+                    { date: '2026-06-04', time: '08:20', type: 'School', info: 'Post-Assessment: Half-day timetable (08:20-12:20), Review of assessment papers, Lessons 1-6, Dismissal 12:30', pdf: 'Summative.pdf' },
+                    { date: '2026-06-05', time: '08:20', type: 'School', info: 'Post-Assessment: Half-day timetable (08:20-12:20), Review of assessment papers, Lessons 1-6, Dismissal 12:30', pdf: 'Summative.pdf' }
                 ];
                 const existingDates = new Set(entries.map(e => `${e.date}|${e.info?.substring(0, 40)}`));
                 for (const h of hardcoded) {
