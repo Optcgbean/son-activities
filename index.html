@@ -143,6 +143,11 @@
             color: #1e40af;
         }
 
+        .upcoming-type.school-test {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
         .upcoming-type.personal {
             background: #fce7f3;
             color: #be185d;
@@ -493,6 +498,11 @@
             color: #1e40af;
         }
 
+        .type-badge.school-test {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
         .type-badge.personal {
             background: #fce7f3;
             color: #be185d;
@@ -646,6 +656,7 @@
                         <select id="act-type" required>
                             <option value="">Select Type...</option>
                             <option value="School">School</option>
+                            <option value="School-Test">School-Test</option>
                             <option value="Personal">Personal</option>
                         </select>
                     </div>
@@ -674,6 +685,7 @@
                     <select id="filter-type">
                         <option value="">All</option>
                         <option value="School">School</option>
+                        <option value="School-Test">School-Test</option>
                         <option value="Personal">Personal</option>
                     </select>
                 </div>
@@ -711,6 +723,7 @@
                 <label>Type</label>
                 <select id="edit-type">
                     <option value="School">School</option>
+                    <option value="School-Test">School-Test</option>
                     <option value="Personal">Personal</option>
                 </select>
             </div>
@@ -890,7 +903,7 @@
 
             container.innerHTML = '<div class="upcoming-cards">' + upcoming.map(e => {
                 const daysClass = e.days <= 1 ? 'soon' : 'week';
-                const typeClass = e.type === 'School' ? 'school' : 'personal';
+                const typeClass = e.type === 'School' ? 'school' : e.type === 'School-Test' ? 'school-test' : 'personal';
                 return `
                     <div class="upcoming-card">
                         <div class="upcoming-card-header">
@@ -936,7 +949,7 @@
                     </thead>
                     <tbody>
                         ${filtered.map(e => {
-                            const typeClass = e.type === 'School' ? 'school' : 'personal';
+                            const typeClass = e.type === 'School' ? 'school' : e.type === 'School-Test' ? 'school-test' : 'personal';
                             const days = daysFromNow(e.date);
                             const dateHighlight = (days !== null && days >= 0 && days <= 5)
                                 ? '<span style="color:#dc2626;font-weight:700;">●</span> ' : '';
