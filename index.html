@@ -731,6 +731,38 @@
             </div>
         </section>
 
+        <!-- Entries Table -->
+        <section class="data-section">
+            <h2>
+                📋 All Activities
+                <span class="data-count" id="entry-count">(0 entries)</span>
+            </h2>
+
+            <div class="controls-bar">
+                <div class="filter-group">
+                    <label>Filter by Type:</label>
+                    <select id="filter-type">
+                        <option value="">All</option>
+                        <option value="School">School</option>
+                        <option value="School-Test">School-Test</option>
+                        <option value="Personal">Personal</option>
+                    </select>
+                </div>
+                <div class="sort-group">
+                    <label style="font-size:0.85rem;color:#666;">Sort:</label>
+                    <button class="sort-btn active desc" data-sort="date" onclick="setSort('date')">Date</button>
+                    <button class="sort-btn" data-sort="type" onclick="setSort('type')">Type</button>
+                </div>
+                <button class="filter-btn" onclick="clearFilters()">Clear Filters</button>
+            </div>
+
+            <div class="table-container" id="table-container">
+                <div class="empty-state">
+                    <p>Loading activities from Airtable...</p>
+                </div>
+            </div>
+        </section>
+
         <!-- Add Form -->
         <section class="form-section">
             <h2>➕ Add New Activity</h2>
@@ -767,38 +799,6 @@
                     <button type="submit" class="btn btn-primary" id="submit-btn">Add Activity</button>
                 </div>
             </form>
-        </section>
-
-        <!-- Entries Table -->
-        <section class="data-section">
-            <h2>
-                📋 All Activities
-                <span class="data-count" id="entry-count">(0 entries)</span>
-            </h2>
-
-            <div class="controls-bar">
-                <div class="filter-group">
-                    <label>Filter by Type:</label>
-                    <select id="filter-type">
-                        <option value="">All</option>
-                        <option value="School">School</option>
-                        <option value="School-Test">School-Test</option>
-                        <option value="Personal">Personal</option>
-                    </select>
-                </div>
-                <div class="sort-group">
-                    <label style="font-size:0.85rem;color:#666;">Sort:</label>
-                    <button class="sort-btn active desc" data-sort="date" onclick="setSort('date')">Date</button>
-                    <button class="sort-btn" data-sort="type" onclick="setSort('type')">Type</button>
-                </div>
-                <button class="filter-btn" onclick="clearFilters()">Clear Filters</button>
-            </div>
-
-            <div class="table-container" id="table-container">
-                <div class="empty-state">
-                    <p>Loading activities from Airtable...</p>
-                </div>
-            </div>
         </section>
     </div>
 
