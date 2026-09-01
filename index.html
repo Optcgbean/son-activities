@@ -237,6 +237,10 @@
             gap: 0.35rem;
         }
 
+        .upcoming-link {
+            margin: 0.4rem 0;
+        }
+
         .empty-upcoming {
             text-align: center;
             padding: 2rem;
@@ -1012,6 +1016,7 @@
             container.innerHTML = '<div class="upcoming-cards">' + upcoming.map(e => {
                 const daysClass = e.days <= 1 ? 'soon' : 'week';
                 const typeClass = e.type === 'School' ? 'school' : e.type === 'School-Test' ? 'school-test' : 'personal';
+                const docLink = entryDocLinks[e.id];
                 return `
                     <div class="upcoming-card">
                         <div class="upcoming-card-header">
@@ -1019,6 +1024,7 @@
                             <span class="upcoming-days ${daysClass}">${daysLabel(e.days)}</span>
                         </div>
                         <div class="upcoming-info">${linkify(e.info)}</div>
+                        ${docLink ? `<div class="upcoming-link"><a href="${docLink}" target="_blank" rel="noopener" class="doc-link-btn">📄 View Details</a></div>` : ''}
                         <div class="upcoming-meta">
                             <span>📅 ${formatDate(e.date)}</span>
                             <span>🕐 ${formatTime(e.time)}</span>
