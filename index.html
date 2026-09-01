@@ -913,6 +913,11 @@
             return match ? match[1] : '';
         }
 
+        // Document links for specific entries (entry ID → URL)
+        const entryDocLinks = {
+            'rec9PcTv8wiQu8qaK': 'school-arrangement.pdf'  // School Photo Taking
+        };
+
         function showError(msg) {
             const el = document.getElementById('global-error');
             el.textContent = msg;
@@ -1057,7 +1062,7 @@
                             const days = daysFromNow(e.date);
                             const dateHighlight = (days !== null && days >= 0 && days <= 5)
                                 ? '<span style="color:#dc2626;font-weight:700;">●</span> ' : '';
-                            const link = extractLink(e.info);
+                            const link = entryDocLinks[e.id] || extractLink(e.info);
                             return `
                                 <tr>
                                     <td class="date-cell">${dateHighlight}${formatDate(e.date)}</td>
