@@ -76,6 +76,55 @@
             to { transform: rotate(360deg); }
         }
 
+        /* Documents Section */
+        .documents-section {
+            margin-bottom: 2rem;
+        }
+        .documents-section h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: #1a1a2e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .doc-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .doc-card {
+            background: #fff;
+            border: 1px solid #e8e8f0;
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-decoration: none;
+            color: #1a1a2e;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 0.4rem;
+            transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+        }
+        .doc-card:hover {
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.12);
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+        }
+        .doc-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.25rem;
+        }
+        .doc-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .doc-desc {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
         /* Upcoming Section */
         .upcoming-section {
             background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
@@ -615,13 +664,40 @@
 <body>
     <div class="container">
         <header>
-            <h1>📅 Son Activities Tracker</h1>
-            <p>Keep track of school and personal activities</p>
+            <h1>📅 Eden Bean 2026-2027</h1>
+            <p>School and personal activities tracker</p>
             <div class="status-bar">
                 <span class="connected">Connected to Airtable</span>
                 <span id="entry-stats">Loading entries...</span>
             </div>
         </header>
+
+        <!-- Documents Section -->
+        <section class="documents-section" id="documents-section">
+            <h2>📄 School Documents</h2>
+            <div class="doc-cards">
+                <a href="timetable.pdf" target="_blank" class="doc-card">
+                    <span class="doc-icon">📋</span>
+                    <span class="doc-title">Timetable</span>
+                    <span class="doc-desc">Class schedule</span>
+                </a>
+                <a href="school-arrangement.pdf" target="_blank" class="doc-card">
+                    <span class="doc-icon">📅</span>
+                    <span class="doc-title">School Arrangement</span>
+                    <span class="doc-desc">Opening & events</span>
+                </a>
+                <a href="special-timetable.pdf" target="_blank" class="doc-card">
+                    <span class="doc-icon">⏰</span>
+                    <span class="doc-title">Special Timetable</span>
+                    <span class="doc-desc">Modified schedule</span>
+                </a>
+                <a href="general-info.docx" target="_blank" class="doc-card">
+                    <span class="doc-icon">ℹ️</span>
+                    <span class="doc-title">General Info</span>
+                    <span class="doc-desc">School information</span>
+                </a>
+            </div>
+        </section>
 
         <!-- Upcoming Section -->
         <section class="upcoming-section" id="upcoming-section">
