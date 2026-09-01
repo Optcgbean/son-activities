@@ -579,6 +579,27 @@
             color: #888;
         }
 
+        /* Link Column */
+        .link-cell {
+            white-space: nowrap;
+        }
+        .doc-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: #eff6ff;
+            color: #2563eb;
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .doc-link-btn:hover {
+            background: #dbeafe;
+        }
+
         /* Edit / Delete Actions */
         .actions-cell {
             white-space: nowrap;
@@ -886,6 +907,12 @@
             return escaped.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener" style="color:#2563eb;text-decoration:underline;">$1</a>');
         }
 
+        function extractLink(text) {
+            if (!text) return '';
+            const match = text.match(/(https?:\/\/[^\s<]+)/);
+            return match ? match[1] : '';
+        }
+
         function showError(msg) {
             const el = document.getElementById('global-error');
             el.textContent = msg;
@@ -1020,6 +1047,7 @@
                             <th style="width:80px">Time</th>
                             <th style="width:100px">Type</th>
                             <th>Information</th>
+                            <th style="width:140px">Link</th>
                             <th style="width:100px">Actions</th>
                         </tr>
                     </thead>
@@ -1029,12 +1057,14 @@
                             const days = daysFromNow(e.date);
                             const dateHighlight = (days !== null && days >= 0 && days <= 5)
                                 ? '<span style="color:#dc2626;font-weight:700;">●</span> ' : '';
+                            const link = extractLink(e.info);
                             return `
                                 <tr>
                                     <td class="date-cell">${dateHighlight}${formatDate(e.date)}</td>
                                     <td class="time-cell">${formatTime(e.time)}</td>
                                     <td><span class="type-badge ${typeClass}">${e.type || '—'}</span></td>
-                                    <td class="info-cell">${linkify(e.info)}</td>
+                                    <td class="info-cell">${escapeHtml(e.info).replace(/\n/g, '<br>')}</td>
+                                    <td class="link-cell">${link ? `<a href="${link}" target="_blank" rel="noopener" class="doc-link-btn">📄 View</a>` : '—'}</td>
                                     <td class="actions-cell">
                                         <button class="action-btn" title="Edit" onclick="openEditModal('${e.id}')">✏️</button>
                                         <button class="action-btn" title="Delete" onclick="deleteEntry('${e.id}')">🗑️</button>
