@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antonelli F1 Card Tracker</title>
+<style>
+  :root{
+    --bg:#0b1220; --panel:#111a2e; --panel2:#0e1626; --line:#1e2b45;
+    --txt:#e6edf7; --dim:#8fa3c0; --teal:#19e3c2; --gold:#f5c542;
+    --orange:#ff8a3d; --red:#ff5c5c; --green:#4ade80;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;padding:16px;max-width:1100px;margin:0 auto}
+  h1{font-size:1.35rem;letter-spacing:.5px;margin-bottom:2px}
+  h1 .badge{color:var(--teal)}
+  .sub{color:var(--dim);font-size:.82rem;margin-bottom:16px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+  .rules{display:grid;grid-template-columns:1fr;gap:8px;font-size:.86rem;color:var(--dim);line-height:1.5}
+  .rules b{color:var(--txt)}
+  .rules .k{color:var(--teal);font-weight:600}
+  .legend{display:flex;flex-wrap:wrap;gap:10px;font-size:.75rem;color:var(--dim);margin-bottom:10px}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
+  table{width:100%;border-collapse:collapse;font-size:.84rem}
+  thead th{position:sticky;top:0;background:var(--panel2);color:var(--dim);font-size:.72rem;text-transform:uppercase;letter-spacing:.6px;padding:10px 8px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+  tbody td{padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+  tbody tr:hover{background:#141f36}
+  .tier{font-weight:700;white-space:nowrap}
+  .t-core{color:var(--teal)} .t-value{color:var(--gold)} .t-watch{color:var(--dim)} .t-auto{color:var(--orange)}
+  .cardname{font-weight:600}
+  .pr{color:var(--dim);font-size:.75rem}
+  .price{font-weight:600;white-space:nowrap}
+  .src{font-size:.68rem;color:var(--dim)}
+  .src.obs{color:var(--green)} .src.est{color:var(--gold)}
+  select{background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-size:.78rem}
+  input.notes{background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:6px;padding:5px 7px;font-size:.78rem;width:130px}
+  input.notes::placeholder{color:#5b6b88}
+  .num{font-variant-numeric:tabular-nums}
+  .tag{display:inline-block;font-size:.66rem;padding:1px 6px;border-radius:4px;border:1px solid var(--line);color:var(--dim);margin-left:4px}
+  .footer{color:var(--dim);font-size:.72rem;margin-top:14px;line-height:1.6}
+  .footer b{color:var(--txt)}
+  @media(max-width:760px){
+    .hide-m{display:none}
+    input.notes{width:90px}
+    body{padding:10px}
+    table{font-size:.78rem}
+  }
+</style>
+</head>
+<body>
+
+<h1>🏎️ KIMI ANTONELLI <span class="badge">— F1 Card Buy Tracker</span></h1>
+<div class="sub">Thesis: future WDC + F1 prominence (5–10 yr) · Budget: <b style="color:var(--txt)">≤ HK$4,000/card</b> · FX: US$1 ≈ HK$7.8 · Updated 2026-11-01 · Prices = reference only, always verify eBay <b>sold</b> comps before buying</div>
+
+<div class="panel">
+  <div class="rules">
+    <div><span class="k">RULE 1 — RCs only for core:</span> <b>2025 Topps Chrome F1 is his true rookie year.</b> 2026 Chrome is second-year → only touch it at /25 or scarcer, bought on dips.</div>
+    <div><span class="k">RULE 2 — Pop cap:</span> walk away if PSA-10 pop &gt; ~50 on the exact parallel (check PSA cert/pop report before every buy).</div>
+    <div><span class="k">RULE 3 — Buy timing:</span> winter break + post-DNF weekends. Never the week after a headline result.</div>
+    <div><span class="k">RULE 4 — Grade economics:</span> only grade when PSA-10 value ≥ 3–4× (raw + ~US$25 grading). Chrome gem rate ~60–75% on clean raw.</div>
+    <div><span class="k">RULE 5 — Number match:</span> his car # is <b>12</b> → serial 12/xx carries a premium; a future #1 plate (title) makes 1/xx special. Pay up only at /25 and below.</div>
+    <div><span class="k">RULE 6 — Comps:</span> eBay solds (130point), PriceCharting, SportsCardInvestor. Asking prices in this thin market are fiction.</div>
+  </div>
+</div>
+
+<div class="legend">
+  <span><span class="dot" style="background:var(--teal)"></span>Core buy</span>
+  <span><span class="dot" style="background:var(--gold)"></span>Value / self-grade play</span>
+  <span><span class="dot" style="background:var(--orange)"></span>Auto</span>
+  <span><span class="dot" style="background:#5b6b88"></span>Watch-only (over budget)</span>
+</div>
+
+<div class="panel" style="overflow-x:auto">
+<table id="tracker">
+<thead>
+<tr>
+  <th>Tier</th><th>Card</th><th>Print</th>
+  <th>Raw target<br><span style="font-weight:400;text-transform:none">HK$</span></th>
+  <th>PSA 10 ref<br><span style="font-weight:400;text-transform:none">HK$</span></th>
+  <th>Play</th>
+  <th>Status</th>
+  <th class="hide-m">Notes</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+
+<div class="footer">
+  <b>Sources:</b> PriceCharting / Midpoint (Sep–Oct 2026), SportsCardInvestor eBay solds, Fanatics Collect, Goldin, Razmania auction track. <span style="color:var(--green)">Green tag = observed sale/guide</span>, <span style="color:var(--gold)">amber tag = estimate — validate before acting</span>.<br>
+  <b>Exit discipline:</b> trim ~25% into first-title hype spike; rest rides 5–10 yr. Track every position's entry vs target. This is a thin market — exits take weeks at fair price.<br>
+  Status &amp; notes save to this browser automatically.
+</div>
+
+<script>
+const ROWS = [
+ // tier: core | value | auto | watch
+ {tier:"core",  card:"2025 Topps Chrome F1 #8 Base RC", print:"—", raw:320, psa10:5400, rawObs:true, psaObs:true,
+  play:"Buy raw ×2–3, self-grade. Even PSA 9 ≈ HK$1,200. Highest EV per dollar in the class.", serial:"base"},
+ {tier:"core",  card:"2025 Topps Chrome F1 #8 Green Refractor", print:"/99", raw:900, psa10:12000, rawObs:false, psaObs:false,
+  play:"Core numbered hold. Gem candidate only — check centering under light.", serial:"green99"},
+ {tier:"value", card:"2025 Topps Chrome F1 #8 Orange Refractor", print:"/25", raw:3600, psa10:30000, rawObs:false, psaObs:false,
+  play:"Top of budget raw. Best scarcity-per-dollar in class. 12/25 = number match, pay +10–15%.", serial:"orange25"},
+ {tier:"value", card:"2025 Topps Now F1 #14 RC", print:"—", raw:250, psa10:2200, rawObs:true, psaObs:true,
+  play:"Cheap certified RC, very liquid. Grab PSA 10 under HK$2,200.", serial:"now14"},
+ {tier:"auto",  card:"2025 Topps Chrome F1 Autograph (base/refr)", print:"varies", raw:2800, psa10:9000, rawObs:false, psaObs:false,
+  play:"On-card only, never sticker. Base auto raw is the only auto near budget.", serial:"auto"},
+ {tier:"watch", card:"2025 Topps Chrome F1 #8 Image Variation SSP", print:"SSP", raw:7400, psa10:155000, rawObs:true, psaObs:true,
+  play:"Pop 6 in PSA 10. Over budget — park on watchlist for a dip or budget change.", serial:"imgvar"},
+ {tier:"watch", card:"2025 Topps Chrome F1 #8 Gold Refractor", print:"/50", raw:6100, psa10:155000, rawObs:true, psaObs:true,
+  play:"Raw observed ~US$784, PSA 10 ~US$19.8k (thin sales). Just over budget raw — bid sniping only.", serial:"gold50"},
+ {tier:"watch", card:"2025 Topps Chrome Sapphire F1 Orange #8", print:"/25", raw:8000, psa10:68000, rawObs:true, psaObs:true,
+  play:"Sapphire tax is real. PSA 9 was $500 ask — 9s of this are a value entry if 10 pops high.", serial:"sappO25"},
+ {tier:"watch", card:"2025 Topps Chrome F1 Helix #HLX-8 SSP", print:"SSP", raw:null, psa10:41300, rawObs:false, psaObs:true,
+  play:"Case hit. $5.3k PSA 10 auction (Oct 25). Grail tier — not a 4k-budget card.", serial:"helix"},
+ {tier:"watch", card:"2026 Topps Chrome F1 — 2nd year", print:"/25↓", raw:null, psa10:null, rawObs:false, psaObs:false,
+  play:"No positions yet. Only /25 or scarcer, bought on post-race dips. Validate prices at release, then track pops.", serial:"y26"},
+];
+
+const TIER_LABEL = {core:"CORE", value:"VALUE", auto:"AUTO", watch:"WATCH"};
+const TIER_CLASS = {core:"t-core", value:"t-value", auto:"t-auto", watch:"t-watch"};
+
+const tbody = document.querySelector("#tracker tbody");
+const saved = JSON.parse(localStorage.getItem("antTracker") || "{}");
+
+function fmt(v){ return v==null ? "—" : "HK$" + v.toLocaleString(); }
+function src(obs){ return `<span class="src ${obs?'obs':'est'}">${obs?'observed':'est.'}</span>`; }
+
+ROWS.forEach((r,i)=>{
+  const st = saved[r.serial]?.status || "watching";
+  const note = saved[r.serial]?.notes || "";
+  const tr = document.createElement("tr");
+  tr.innerHTML = `
+    <td class="tier ${TIER_CLASS[r.tier]}">${TIER_LABEL[r.tier]}</td>
+    <td><div class="cardname">${r.card}</div><div class="pr">${r.play}</div></td>
+    <td class="num">${r.print}</td>
+    <td class="price num">${fmt(r.raw)} ${src(r.rawObs)}</td>
+    <td class="price num">${fmt(r.psa10)} ${src(r.psaObs)}</td>
+    <td style="font-size:.75rem;color:var(--dim)">${r.tier==="watch"?"—":(r.tier==="auto"?"only on-card":"raw→PSA")}</td>
+    <td>
+      <select data-serial="${r.serial}" data-field="status">
+        <option ${st==='watching'?'selected':''}>watching</option>
+        <option ${st==='target set'?'selected':''}>target set</option>
+        <option ${st==='bid placed'?'selected':''}>bid placed</option>
+        <option ${st==='won'?'selected':''}>won</option>
+        <option ${st==='sent to PSA'?'selected':''}>sent to PSA</option>
+        <option ${st==='slabbed'?'selected':''}>slabbed</option>
+        <option ${st==='passed'?'selected':''}>passed</option>
+      </select>
+    </td>
+    <td class="hide-m"><input class="notes" data-serial="${r.serial}" data-field="notes" placeholder="pop, price paid…" value="${note.replace(/"/g,'&quot;')}"></td>`;
+  tbody.appendChild(tr);
+});
+
+document.querySelectorAll("select,input.notes").forEach(el=>{
+  el.addEventListener("change", ()=>{
+    saved[el.dataset.serial] = saved[el.dataset.serial] || {};
+    saved[el.dataset.serial][el.dataset.field] = el.value;
+    localStorage.setItem("antTracker", JSON.stringify(saved));
+  });
+});
+</script>
+</body>
+</html>
