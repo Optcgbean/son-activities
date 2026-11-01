@@ -63,6 +63,23 @@
   </div>
 </div>
 
+<div class="panel">
+  <h2 style="font-size:1rem;margin-bottom:10px;color:var(--teal)">📦 Execution Batches</h2>
+  <div class="rules">
+    <div><span class="k">BATCH 1 — Foundation (now → mid-Nov):</span> 3–5× 2025 Chrome <b>#8 base RC raw ≤HK$320 ea</b> (current asks ~HK$220 + ship) → group-grade at PSA (~US$20/card, expect ~2/3 gem rate). +1× unnumbered <b>Refractor ≤HK$700</b>. +1× <b>Topps Now #14 PSA 10 ≤HK$2,200</b>. Total outlay ≈ HK$2,500–3,500.</div>
+    <div><span class="k">BATCH 2 — Numbered tier (Dec–Feb winter lull):</span> Green /99 raw ≤HK$900 · Orange /25 raw ≤HK$3,600. <b>#8 or #185 — buy whichever is cheaper at the same print run</b> (arbitrage). 12/xx number match: pay +10–15%. Only sellers with returns; flashlight + centering check before paying.</div>
+    <div><span class="k">BATCH 3 — 2026 Chrome (on post-race dips only):</span> no positions yet. Only /25 or scarcer, pop-checked, bought in the week after bad weekends — never after wins.</div>
+    <div><span class="k">BATCH 4 — Rolling (ongoing):</span> sell PSA 9 duplicates to recycle capital → upgrade. Autos: on-card only (Chrome Autographs CAC-ANT), ≤HK$2,800 raw. Trim 25% into first-title hype; rest rides 5–10 yr.</div>
+  </div>
+</div>
+
+<div class="panel">
+  <h2 style="font-size:1rem;margin-bottom:10px;color:var(--teal)">📋 Pre-Buy Checklist (every card, no exceptions)</h2>
+  <div class="rules">
+    <div>1. PSA pop report on the exact parallel — <b>walk if PSA-10 pop &gt; ~50</b> · 2. eBay <b>sold</b> median (130point) within 30 days · 3. Actual serial # visible in photos = listing · 4. Returns accepted · 5. Centering ≤55/45 front, no hairlines under angled light · 6. Never buy the week after a headline result.</div>
+  </div>
+</div>
+
 <div class="legend">
   <span><span class="dot" style="background:var(--teal)"></span>Core buy</span>
   <span><span class="dot" style="background:var(--gold)"></span>Value / self-grade play</span>
@@ -89,6 +106,7 @@
 <div class="footer">
   <b>Sources:</b> PriceCharting / Midpoint (Sep–Oct 2026), SportsCardInvestor eBay solds, Fanatics Collect, Goldin, Razmania auction track. <span style="color:var(--green)">Green tag = observed sale/guide</span>, <span style="color:var(--gold)">amber tag = estimate — validate before acting</span>.<br>
   <b>Exit discipline:</b> trim ~25% into first-title hype spike; rest rides 5–10 yr. Track every position's entry vs target. This is a thin market — exits take weeks at fair price.<br>
+  <b>Live tools:</b> <a style="color:var(--teal)" href="https://www.130point.com" target="_blank" rel="noopener">130point (eBay solds)</a> · <a style="color:var(--teal)" href="https://www.psacard.com/pop" target="_blank" rel="noopener">PSA pop reports</a> · <a style="color:var(--teal)" href="https://www.pricecharting.com" target="_blank" rel="noopener">PriceCharting</a> · <a style="color:var(--var(--teal));color:var(--teal)" href="https://www.sportscardinvestor.com" target="_blank" rel="noopener">SportsCardInvestor</a> · eBay saved searches: "Antonelli 2025 Topps Chrome 8", "Antonelli Topps Chrome green /99", "Antonelli Topps Chrome orange /25"
   Status &amp; notes save to this browser automatically.
 </div>
 
@@ -97,8 +115,12 @@ const ROWS = [
  // tier: core | value | auto | watch
  {tier:"core",  card:"2025 Topps Chrome F1 #8 Base RC", print:"—", raw:320, psa10:5400, rawObs:true, psaObs:true,
   play:"Buy raw ×2–3, self-grade. Even PSA 9 ≈ HK$1,200. Highest EV per dollar in the class.", serial:"base"},
+ {tier:"core",  card:"2025 Topps Chrome F1 #185 'On The Move' Base RC", print:"—", raw:280, psa10:4800, rawObs:true, psaObs:false,
+  play:"SECOND base RC in the set — cheaper than #8 at same tier. Arbitrage row: buy the cheaper card.", serial:"base185"},
  {tier:"core",  card:"2025 Topps Chrome F1 #8 Green Refractor", print:"/99", raw:900, psa10:12000, rawObs:false, psaObs:false,
-  play:"Core numbered hold. Gem candidate only — check centering under light.", serial:"green99"},
+  play:"Core numbered hold. 1:146 hobby packs. Gem candidate only — check centering under light.", serial:"green99"},
+ {tier:"value", card:"2025 Topps Chrome F1 #185 Green Refractor", print:"/99", raw:800, psa10:11000, rawObs:false, psaObs:false,
+  play:"Same scarcity as #8 Green, usually discounts 10–20% — take it.", serial:"green99b"},
  {tier:"value", card:"2025 Topps Chrome F1 #8 Orange Refractor", print:"/25", raw:3600, psa10:30000, rawObs:false, psaObs:false,
   play:"Top of budget raw. Best scarcity-per-dollar in class. 12/25 = number match, pay +10–15%.", serial:"orange25"},
  {tier:"value", card:"2025 Topps Now F1 #14 RC", print:"—", raw:250, psa10:2200, rawObs:true, psaObs:true,
